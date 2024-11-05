@@ -1,0 +1,77 @@
+create database payxpert
+
+CREATE TABLE `payxpert`.`employee` (
+  `EmployeeID` INT NOT NULL,
+  `FirstName` VARCHAR(45) NULL,
+  `LastName` VARCHAR(45) NULL,
+  `DateOfBirth` VARCHAR(45) NULL,
+  `Gender` VARCHAR(45) NULL,
+  `Email` VARCHAR(45) NULL,
+  `PhoneNumber` VARCHAR(45) NULL,
+  `Address` VARCHAR(45) NULL,
+  `Position` VARCHAR(45) NULL,
+  `JoiningDate` VARCHAR(45) NULL,
+  `TerminationDate` VARCHAR(45) NULL,
+  PRIMARY KEY (`EmployeeID`));
+
+ALTER TABLE `payxpert`.`employee` 
+CHANGE COLUMN `DateOfBirth` `DateOfBirth` DATE NULL DEFAULT NULL ,
+CHANGE COLUMN `JoiningDate` `JoiningDate` DATE NULL DEFAULT NULL ,
+CHANGE COLUMN `TerminationDate` `TerminationDate` DATE NULL DEFAULT NULL ;
+
+CREATE TABLE `payxpert`.`payroll` (
+  `PayrollID` INT NOT NULL,
+  `EmployeeID` INT NULL,
+  `PayPeriodStartDate` DATE NULL,
+  `PayPeriodEndDate` DATE NULL,
+  `BasicSalary` VARCHAR(45) NULL,
+  `OvertimePay` VARCHAR(45) NULL,
+  `Deductions` VARCHAR(45) NULL,
+  `NetSalary` VARCHAR(45) NULL,
+  PRIMARY KEY (`PayrollID`),
+  INDEX `EmployeeID_idx` (`EmployeeID` ASC) VISIBLE,
+  CONSTRAINT `EmployeeID`
+    FOREIGN KEY (`EmployeeID`)
+    REFERENCES `payxpert`.`employee` (`EmployeeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+ALTER TABLE `payxpert`.`payroll` 
+DROP FOREIGN KEY `EmployeeID`;
+ALTER TABLE `payxpert`.`payroll` 
+ADD CONSTRAINT `EmployeeID`
+  FOREIGN KEY (`EmployeeID`)
+  REFERENCES `payxpert`.`employee` (`EmployeeID`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+INSERT INTO `payxpert`.`employee` 
+(`EmployeeID`, `FirstName`, `LastName`, `DateOfBirth`, `Gender`, `Email`, `PhoneNumber`, `Address`, `Position`, `JoiningDate`, `TerminationDate`)
+VALUES
+(1, 'John', 'Doe', '1985-03-15', 'Male', 'john.doe@example.com', '9876543210', '123 Elm Street, CityA', 'Software Engineer', '2015-05-20', NULL),
+(2, 'Jane', 'Smith', '1990-07-25', 'Female', 'jane.smith@example.com', '8765432109', '456 Oak Avenue, CityB', 'Data Analyst', '2018-02-10', NULL),
+(3, 'Alice', 'Brown', '1992-11-10', 'Female', 'alice.brown@example.com', '7654321098', '789 Pine Road, CityC', 'HR Manager', '2016-09-15', '2024-03-01'),
+(4, 'Bob', 'Wilson', '1988-01-20', 'Male', 'bob.wilson@example.com', '6543210987', '101 Maple Lane, CityD', 'Project Manager', '2013-06-01', NULL),
+(5, 'Charlie', 'Miller', '1983-04-05', 'Male', 'charlie.miller@example.com', '5432109876', '202 Cedar Blvd, CityE', 'Marketing Manager', '2012-03-25', '2023-12-31'),
+(6, 'David', 'Clark', '1995-08-30', 'Male', 'david.clark@example.com', '4321098765', '303 Birch Place, CityF', 'Business Analyst', '2019-07-01', NULL),
+(7, 'Eve', 'Johnson', '1987-12-14', 'Female', 'eve.johnson@example.com', '3210987654', '404 Willow Drive, CityG', 'Product Manager', '2017-04-10', NULL),
+(8, 'Frank', 'Davis', '1991-05-22', 'Male', 'frank.davis@example.com', '2109876543', '505 Ash Way, CityH', 'UX Designer', '2021-08-15', NULL),
+(9, 'Grace', 'Lopez', '1993-09-18', 'Female', 'grace.lopez@example.com', '1098765432', '606 Redwood Terrace, CityI', 'Software Tester', '2020-11-20', NULL),
+(10, 'Hank', 'Martinez', '1986-02-27', 'Male', 'hank.martinez@example.com', '0987654321', '707 Spruce Street, CityJ', 'IT Support', '2014-01-05', NULL);
+
+
+INSERT INTO `payxpert`.`payroll` 
+(`PayrollID`, `EmployeeID`, `PayPeriodStartDate`, `PayPeriodEndDate`, `BasicSalary`, `OvertimePay`, `Deductions`, `NetSalary`)
+VALUES
+(1, 1, '2024-01-01', '2024-01-15', '50000', '2000', '1500', '50500'),
+(2, 2, '2024-01-01', '2024-01-15', '45000', '2500', '1000', '46500'),
+(3, 3, '2024-01-01', '2024-01-15', '60000', '3000', '2000', '61000'),
+(4, 4, '2024-01-01', '2024-01-15', '70000', '4000', '2500', '71500'),
+(5, 5, '2024-01-01', '2024-01-15', '80000', '5000', '3000', '82000'),
+(6, 6, '2024-01-01', '2024-01-15', '55000', '3500', '1800', '56700'),
+(7, 7, '2024-01-01', '2024-01-15', '75000', '4500', '2200', '77300'),
+(8, 8, '2024-01-01', '2024-01-15', '48000', '2800', '1200', '49600'),
+(9, 9, '2024-01-01', '2024-01-15', '52000', '3200', '1400', '53800'),
+(10, 10, '2024-01-01', '2024-01-15', '62000', '3700', '1600', '64100');
+
+
